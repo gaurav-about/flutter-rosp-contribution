@@ -172,6 +172,39 @@ void main() {
     );
   });
 
+  testWidgets('Small Badge respects custom offset', (WidgetTester tester) async {
+    final theme = ThemeData();
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: theme,
+        home: const Align(
+          alignment: Alignment.topLeft,
+          child: Badge(
+            offset: Offset(2, -2),
+            child: Icon(Icons.add),
+          ),
+        ),
+      ),
+    );
+
+    // default smallSize = 6, icon.width = 24
+    // with offset (2, -2):
+    // L = 18 + 2 = 20
+    // T = 0 - 2 = -2
+    // R = 24 + 2 = 26
+    // B = 6 - 2 = 4
+
+    final RenderBox box = tester.renderObject(find.byType(Badge));
+    expect(
+      box,
+      paints..rrect(
+        rrect: RRect.fromLTRBR(20, -2, 26, 4, const Radius.circular(3)),
+        color: theme.colorScheme.error,
+      ),
+    );
+  });
+
   testWidgets('Small Badge RTL defaults', (WidgetTester tester) async {
     final theme = ThemeData();
 
