@@ -144,13 +144,12 @@ class Badge extends StatelessWidget {
   final AlignmentGeometry? alignment;
 
   /// Combined with [alignment] to determine the location of the [label]
-  /// relative to the [child].
-  ///
-  /// This value is only used if [label] is non-null.
+  /// or small badge relative to the [child].
   ///
   /// Defaults to the [BadgeTheme]'s offset, or
   /// if the theme's value is null then `Offset(4, -4)` for
   /// [TextDirection.ltr] or `Offset(-4, -4)` for [TextDirection.rtl].
+  /// When [label] is null, defaults to [Offset.zero].
   final Offset? offset;
 
   /// The badge's content, typically a [Text] widget that contains 1 to 4
@@ -240,7 +239,7 @@ class Badge extends StatelessWidget {
         Positioned.fill(
           child: _Badge(
             alignment: effectiveAlignment,
-            offset: hasLabel ? effectiveOffset : Offset.zero,
+            offset: hasLabel ? effectiveOffset : (offset ?? badgeTheme.offset ?? Offset.zero),
             hasLabel: hasLabel,
             widthOffset: effectiveWidthOffset,
             textDirection: textDirection,
